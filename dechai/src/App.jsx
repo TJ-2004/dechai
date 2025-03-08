@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import abi from "./contractJson/chai.json";
 import { ethers } from "ethers";
+import Buy from "./components/Buy.jsx";
+import Memos from "./components/Memos.jsx";
+import chai from "./chai.png";
 import "./App.css";
 
 const App = () => {
@@ -28,14 +31,15 @@ const App = () => {
         window.ethereum.on("accountsChanged", () => {
           window.location.reload();
         });
-        // console.log("ethers:", ethers);
-        // console.log("ethers.BrowserProvider:", ethers.BrowserProvider); // For v6
-        // console.log("window.ethereum:", window.ethereum);
-        setAccount(accounts); 
+        setAccount(accounts);
         const provider = new ethers.BrowserProvider(ethereum); // v6
         const signer = await provider.getSigner(); // v6 requires await
-        const contract = new ethers.Contract(contractAddress, contractABI, signer);
-        console.log(contract)
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        // console.log(contract);
         setState({ provider, signer, contract });
       } catch (error) {
         console.error(error);
@@ -44,7 +48,17 @@ const App = () => {
     template();
   }, []);
 
-  return <div>Account: {account}</div>;
+  return (
+    <div>
+      <img src={chai} className="img-fluid" alt=".." width="100%" />
+      <p style={{ marginTop: "10px", marginLeft: "5px" }}>
+        <small>Connected Account - {account}</small>
+      </p>
+
+      <Buy state={state} />
+      <Memos state={state} />
+    </div>
+  );
 };
 
 export default App;
