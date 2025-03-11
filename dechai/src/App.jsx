@@ -62,7 +62,6 @@ const App = () => {
           setState({ provider, signer, contract });
         }
 
-        // Reload on account change
         ethereum.on('accountsChanged', () => window.location.reload());
 
         setLoading(false);
@@ -102,10 +101,8 @@ const App = () => {
         </p>
       )}
 
-      {/* Always show Buy form, but disable transaction inside it if wallet not connected */}
       <Buy state={state} isWalletConnected={!!account} />
 
-      {/* Show memos only when wallet is connected */}
       {account && state.signer ? (
         <Memos state={state} />
       ) : (
